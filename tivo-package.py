@@ -38,7 +38,7 @@ def makeFlashPackage( tempMakeDir ):
 
 	files.append( manifestFileName )
 
-	packWithBOM( tempMakeDir, "bin", makeFileList( inAppPath ), "data.cpio" )
+	packWithBOM( tempMakeDir, inAppPath, makeFileList( inAppPath ), "data.cpio" )
 	gzip( join( tempMakeDir, "data.cpio" ), join( tempMakeDir, "data.cpio.gz" ) )
 
 	files.append( "data.cpio.gz" )
