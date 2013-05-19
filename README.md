@@ -12,13 +12,12 @@ Cross-platform (eventually) python script to repackage an AIR package into a .ti
 
 * Currently only handles "flash2" package type
 * Multiple simultaneous invocations will mess stuff up
-* Only tested lightly on Windows so far, doubt it works anywhere else yet
+* Only tested lightly on Windows so far, doubt it works anywhere else yet but should only need a tweak or two
 
 ### requirements:
 
-On Windows, requires Python 3 (tested with 3.3), CPIO, and Gzip in the path.
+On Windows, requires Python 3 (tested with 3.3) and CPIO.
 
 * http://gnuwin32.sourceforge.net/packages/cpio.htm
-* http://gnuwin32.sourceforge.net/packages/gzip.htm
 
 
