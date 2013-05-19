@@ -1,13 +1,12 @@
 ## tivo_flash_packager
 
-Cross-platform (eventually) python script to package swfs from an unzipped AIR package 
-into a .tivoipkg
+Cross-platform (eventually) python script to repackage an AIR package into a .tivoipkg
 
 ### usage:
 
-    [python] tivo-package.py extractedAirPkgDir targetFile
+    [python] tivo-package.py airFile targetFile
     
-...where extractedAirPkgDir is where you unzipped your AIR package and targetFile is the full path (including filename) of where you want your tivoipkg.
+...where airFile is the path to your packaged .air archive and targetFile is the full path (including filename) of where you want your tivoipkg.
 
 ### important, _very_ alpha: 
 

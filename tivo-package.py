@@ -1,7 +1,7 @@
-import re, sys, subprocess, os, shutil
+import re, sys, subprocess, os, shutil, zipfile
 from os.path import join, relpath, abspath
 
-inAppPath = sys.argv[1] 		# "bin"
+inAppPath = sys.argv[1] 		# "air/myapp.air"
 inTargetFile = sys.argv[2]		# "localserver/app/testharness.tivoipkg"
 tempDir = "tivo-package_temp"
 
@@ -17,12 +17,26 @@ else:
 def main():
 	shutil.rmtree( tempDir, True )
 	os.mkdir( tempDir )
-
-	tmpPkg = makeFlashPackage( tempDir )
+	
+	airDir = join( tempDir, "air-extract" )
+	os.mkdir( airDir )
+	extractAir( inAppPath, airDir )
+	
+	tivoDir = join( tempDir, "tivo-build" )
+	os.mkdir( tivoDir )
+	tmpPkg = makeFlashPackage( airDir, tivoDir )
 	os.replace( tmpPkg, inTargetFile )
 	shutil.rmtree( tempDir, True )
 
-def makeFlashPackage( tempMakeDir ):
+def extractAir( airPath, tempAirDir ):
+	with zipfile.ZipFile( airPath, 'r' ) as airZip:
+		# file "hash" seems to always get a bad CRC!
+		airZip.extractall( tempAirDir, filter( 
+			lambda f: f != "META-INF/AIR/hash" and not f.endswith('/'), airZip.namelist() ) )
+		airZip.close()
+	
+		
+def makeFlashPackage( airDir, tempMakeDir ):
 
 	files = []
 	pkgType = "flash2"
@@ -38,7 +52,7 @@ def makeFlashPackage( tempMakeDir ):
 
 	files.append( manifestFileName )
 
-	packWithBOM( tempMakeDir, inAppPath, makeFileList( inAppPath ), "data.cpio" )
+	packWithBOM( tempMakeDir, airDir, makeFileList( airDir ), "data.cpio" )
 	gzip( join( tempMakeDir, "data.cpio" ), join( tempMakeDir, "data.cpio.gz" ) )
 
 	files.append( "data.cpio.gz" )
